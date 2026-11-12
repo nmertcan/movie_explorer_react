@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { FavoritesContext } from "../context/FavoritesContext";
+import { validateFavorite } from "../utils/favorites";
 
 export default function FavoriteForm() {
   const { addFavorite, selectedMovie } = useContext(FavoritesContext);
@@ -18,30 +19,10 @@ export default function FavoriteForm() {
     }
   }, [selectedMovie]);
 
-  const validate = () => {
-    const nextErrors = {};
-
-    if (!selectedMovie) {
-      nextErrors.movie = "Önce bir film seçmelisin.";
-    }
-
-    if (!name.trim()) {
-      nextErrors.name = "Favori ismi zorunludur.";
-    }
-
-    if (!description.trim()) {
-      nextErrors.description = "Açıklama zorunludur.";
-    } else if (description.trim().length < 10) {
-      nextErrors.description = "Açıklama en az 10 karakter olmalıdır.";
-    }
-
-    return nextErrors;
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const nextErrors = validate();
+    const nextErrors = validateFavorite({ selectedMovie, name, description });
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);

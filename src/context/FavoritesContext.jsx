@@ -1,4 +1,5 @@
 import { createContext, useMemo, useState } from "react";
+import { addOrUpdateFavorite, removeFavoriteById } from "../utils/favorites";
 
 export const FavoritesContext = createContext();
 
@@ -7,21 +8,11 @@ export default function FavoritesProvider({ children }) {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const addFavorite = (favorite) => {
-    setFavorites((prev) => {
-      const exists = prev.some((movie) => movie.id === favorite.id);
-
-      if (exists) {
-        return prev.map((movie) =>
-          movie.id === favorite.id ? favorite : movie
-        );
-      }
-
-      return [...prev, favorite];
-    });
+    setFavorites((prev) => addOrUpdateFavorite(prev, favorite));
   };
 
   const removeFavorite = (id) => {
-    setFavorites((prev) => prev.filter((movie) => movie.id !== id));
+    setFavorites((prev) => removeFavoriteById(prev, id));
   };
 
   const value = useMemo(
