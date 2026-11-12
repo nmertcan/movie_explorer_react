@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function MovieCard({ movie, selectedMovie, setSelectedMovie }) {
+export default function MovieCard({ movie, category, selectedMovie, setSelectedMovie }) {
   const isSelected = selectedMovie?.id === movie.id;
 
   return (
@@ -12,7 +12,7 @@ export default function MovieCard({ movie, selectedMovie, setSelectedMovie }) {
         <p>{movie.year || "Yıl bilgisi yok"}</p>
 
         <div className="card-actions">
-          <Link to={`/movie/${movie.id}`}>Detay</Link>
+          <Link to={`/movie/${movie.id}?category=${encodeURIComponent(category)}`}>Detay</Link>
           <button type="button" onClick={() => setSelectedMovie(movie)}>
             Favori İçin Seç
           </button>

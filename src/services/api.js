@@ -48,9 +48,10 @@ export async function getMovies(category = "drama", client = api) {
   return promise;
 }
 
-export async function getMovieById(id, client = api) {
+export async function getMovieById(id, client = api, category = null) {
+  const categories = movieCategories.includes(category) ? [category] : movieCategories;
   const movieLists = await Promise.all(
-    movieCategories.map((category) => getMovies(category, client))
+    categories.map((name) => getMovies(name, client))
   );
   return movieLists.flat().find((movie) => String(movie.id) === String(id)) || null;
 }
