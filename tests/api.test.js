@@ -43,3 +43,38 @@ test("getMovieById propagates API failures", async () => {
     get: async () => { throw new Error("network unavailable"); }
   }), /network unavailable/);
 });
+
+test("getMovieById fetches only the specified valid category", async () => {
+  const requests = [];
+  const found = { id: 19, title: "Comedy film" };
+  const result = await getMovieById("19", {
+    get: async (path) => {
+      requests.push(path);
+      return { data: [found] };
+    }
+  }, "comedy");
+  assert.deepEqual(result, found);
+  assert.deepEqual(requests, ["/comedy"]);
+});
+
+test("getMovieById falls back to all categories for old links without category", async () => {
+  const requests = [];
+  await getMovieById("missing", {
+    get: async (path) => {
+      requests.push(path);
+      return { data: [] };
+    }
+  });
+  assert.equal(requests.length, movieCategories.length);
+});
+
+test("getMovieById safely falls back for invalid category query", async () => {
+  const requests = [];
+  await getMovieById("missing", {
+    get: async (path) => {
+      requests.push(path);
+      return { data: [] };
+    }
+  }, "unknown");
+  assert.equal(requests.length, movieCategories.length);
+});
