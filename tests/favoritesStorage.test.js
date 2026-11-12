@@ -41,7 +41,7 @@ test("ignores malformed favorites while retaining valid records", () => {
 
 test("handles unavailable storage", () => {
   assert.deepEqual(loadFavorites(null), []);
-  assert.equal(saveFavorites(null, [favorite]), true);
+  assert.equal(saveFavorites(null, [favorite]), false);
 });
 
 test("handles blocked storage reads and writes", () => {
