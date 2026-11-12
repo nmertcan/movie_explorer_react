@@ -28,8 +28,9 @@ export function loadFavorites(storage) {
 }
 
 export function saveFavorites(storage, favorites) {
+  if (!storage) return false;
   try {
-    storage?.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+    storage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
     return true;
   } catch {
     return false;
