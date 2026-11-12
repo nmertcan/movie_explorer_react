@@ -1,11 +1,18 @@
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
+import { loadFavorites, saveFavorites } from "../utils/favoritesStorage";
 import { addOrUpdateFavorite, removeFavoriteById } from "../utils/favorites";
 
 export const FavoritesContext = createContext();
 
 export default function FavoritesProvider({ children }) {
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState(() =>
+    loadFavorites(typeof window === "undefined" ? null : window.localStorage)
+  );
   const [selectedMovie, setSelectedMovie] = useState(null);
+
+  useEffect(() => {
+    saveFavorites(typeof window === "undefined" ? null : window.localStorage, favorites);
+  }, [favorites]);
 
   const addFavorite = (favorite) => {
     setFavorites((prev) => addOrUpdateFavorite(prev, favorite));
