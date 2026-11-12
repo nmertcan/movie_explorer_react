@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import ErrorMessage from "../components/ErrorMessage";
 import Loading from "../components/Loading";
 import { FavoritesContext } from "../context/FavoritesContext";
@@ -8,6 +8,8 @@ import { getMovieById } from "../services/api";
 export default function MovieDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
   const { setSelectedMovie } = useContext(FavoritesContext);
 
   const [movie, setMovie] = useState(null);
@@ -18,11 +20,11 @@ export default function MovieDetail() {
     setLoading(true);
     setError(false);
 
-    getMovieById(id)
+    getMovieById(id, undefined, category)
       .then((foundMovie) => setMovie(foundMovie))
       .catch(() => setError(true))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, category]);
 
   if (loading) {
     return <Loading />;
