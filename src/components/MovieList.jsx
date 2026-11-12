@@ -1,6 +1,6 @@
 import MovieCard from "./MovieCard";
 
-export default function MovieList({ movies, selectedMovie, setSelectedMovie }) {
+export default function MovieList({ movies, category, selectedMovie, setSelectedMovie }) {
   if (movies.length === 0) {
     return (
       <div className="message-box">
@@ -15,6 +15,7 @@ export default function MovieList({ movies, selectedMovie, setSelectedMovie }) {
         <MovieCard
           key={movie.id}
           movie={movie}
+          category={category}
           selectedMovie={selectedMovie}
           setSelectedMovie={setSelectedMovie}
         />
