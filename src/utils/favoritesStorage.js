@@ -1,3 +1,11 @@
+export function getBrowserStorage() {
+  try {
+    return typeof window === "undefined" ? null : window.localStorage;
+  } catch {
+    return null;
+  }
+}
+
 export const FAVORITES_STORAGE_KEY = "movie-explorer:favorites:v1";
 
 export function loadFavorites(storage) {
