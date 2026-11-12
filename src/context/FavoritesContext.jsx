@@ -1,17 +1,17 @@
 import { createContext, useEffect, useMemo, useState } from "react";
-import { loadFavorites, saveFavorites } from "../utils/favoritesStorage";
+import { getBrowserStorage, loadFavorites, saveFavorites } from "../utils/favoritesStorage";
 import { addOrUpdateFavorite, removeFavoriteById } from "../utils/favorites";
 
 export const FavoritesContext = createContext();
 
 export default function FavoritesProvider({ children }) {
   const [favorites, setFavorites] = useState(() =>
-    loadFavorites(typeof window === "undefined" ? null : window.localStorage)
+    loadFavorites(getBrowserStorage())
   );
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
-    saveFavorites(typeof window === "undefined" ? null : window.localStorage, favorites);
+    saveFavorites(getBrowserStorage(), favorites);
   }, [favorites]);
 
   const addFavorite = (favorite) => {
