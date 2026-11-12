@@ -59,6 +59,7 @@ export default function Home() {
           {!loading && !error && (
             <MovieList
               movies={filteredMovies}
+              category={category}
               selectedMovie={selectedMovie}
               setSelectedMovie={setSelectedMovie}
             />
